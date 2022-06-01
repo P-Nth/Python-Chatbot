@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <title>{% block title %}Tlior: ChatBot Project{% endblock %}</title>
+  </head>
+  <body>
+    <nav>
+      <div class="navigation">
+        <div class="logo_container">
+          <div class="logo">
+            <img src="../static/images/logo.png" alt="logo image" />
+          </div>
+        </div>
+        <div class="nav_links_container">
+          <a id="nav_link">Home</a>
+          <a id="nav_link">About</a>
+          <a id="nav_link">Pricing</a>
+        </div>
+        <div class="join_btn_container">
+          <button id="join">SignUp</button>
+          <button id="login">Login</button>
+        </div>
+      </div>
+    </nav>
+    <div class="header_page">
+      <div class="row1">
+        <h1>
+          A RANDOM CHATBOT GROUP PROJECT CREATED BY TUK STUDENTS IN AN AI CLASS.
+        </h1>
+        <div class="call_to_actn_btn">
+          <button>Get Started</button>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="header_img">
+          <img src="../static/images/headerimg1.jpg" alt="header image" />
+        </div>
+      </div>
+    </div>
+    <div class="chatclient">
+      <div class="chatclient_container">
+        <div class="opener">
+          <img src="../static/images/minimize.png" alt="minimize icon" />
+        </div>
+        <div class="recycler">
+          <div class="scroll_view">
+            <div class="incoming" key="">
+              <div class="profile">
+                <img
+                  src="../static/images/incoming.png"
+                  alt="incoming profile"
+                />
+              </div>
+              <div class="actual_msg">
+                <div id="actual_msg" key="">
+                  <p>
+                    Hello! My name is AI. Am your Tlior assistant. Ask me
+                    something and see me respond. Am amazing try me out!
+                  </p>
+                </div>
+                <div id="actual_msg" key="">
+                  <p>
+                    *Disclaimer* I'm under training you can only ask me about
+                    physics and chemistry topics. I'm still trying to learn more
+                    as long as you feed me with more knowledge. Please be kind!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="outgoing" key="">
+              <div class="actual_msg">
+                <!-- <div id="actual_msg" key=""></div> -->
+              </div>
+              <div class="profile">
+                <img
+                  src="../static/images/outgoing.png"
+                  alt="outgoing profile"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="message_input">
+            <input type="text" placeholder="ask me anything! Human" />
+            <div class="send_btn">
+              <img src="../static/images/send.png" alt="send message" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
