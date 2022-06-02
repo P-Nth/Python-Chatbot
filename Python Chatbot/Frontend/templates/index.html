@@ -60,7 +60,7 @@
         </div>
         <div class="recycler">
           <div class="scroll_view">
-            <div class="incoming" key="">
+            <div class="incoming">
               <div class="profile">
                 <img
                   class="profilepic"
@@ -76,25 +76,8 @@
                   </p>
                 </div>
                 <div class="message" id="actual_msg" key="">
-                  <p>
-                    *Disclaimer* I'm still under training so, you can only ask
-                    me about physics and chemistry topics. I'm trying to learn
-                    more as long as you feed me with more knowledge. Please be
-                    kind!
-                  </p>
+                  <p>And if you want to exit at anytime, just type Bye!</p>
                 </div>
-              </div>
-            </div>
-            <div class="outgoing" key="">
-              <div class="actual_msg">
-                <!-- <div id="actual_msg" key=""></div> -->
-              </div>
-              <div class="profile">
-                <img
-                  class="profilepic"
-                  src="../static/images/outgoing.png"
-                  alt="outgoing profile"
-                />
               </div>
             </div>
           </div>
@@ -108,6 +91,9 @@
       </div>
     </div>
 
+    <!-- <script>
+      $SCRIPT_ROOT = {{ request.script_root|tojson }};
+    </script> -->
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='scripts/scripts.js') }}"

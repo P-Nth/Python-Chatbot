@@ -134,7 +134,7 @@ body .chatclient .chatclient_container {
   max-height: 2.45em;
   transition: all 0.4s ease-in;
 }
-body .chatclient .chatclient_container.hide {
+body .chatclient .chatclient_container.unhide {
   max-height: 40em;
 }
 body .chatclient .chatclient_container .opener {
@@ -151,6 +151,8 @@ body .chatclient .chatclient_container .opener img {
 }
 body .chatclient .chatclient_container .opener #max_toggler {
   padding: 0.4em;
+  opacity: 0;
+  visibility: hidden;
 }
 body .chatclient .chatclient_container .recycler {
   padding: 1em 0.5em;
