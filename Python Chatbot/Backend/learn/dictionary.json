@@ -2,25 +2,5 @@
     {"tag": "greetings",
     "patterns": ["hello", "hey", "hi", "good day", "ssup", "how are you"],
     "responses": ["Hello!", "Hey!", "Hello what can I do for you?", "Ssup!"]
-    },
-    {"tag": "greetings",
-    "patterns": ["hello", "hey", "hi", "good day", "ssup", "how are you"],
-    "responses": ["Hello!", "Hey!", "Hello what can I do for you?", "Ssup!"]
-    },
-    {"tag": "greetings",
-    "patterns": ["hello", "hey", "hi", "good day", "ssup", "how are you"],
-    "responses": ["Hello!", "Hey!", "Hello what can I do for you?", "Ssup!"]
-    },
-    {"tag": "greetings",
-    "patterns": ["hello", "hey", "hi", "good day", "ssup", "how are you"],
-    "responses": ["Hello!", "Hey!", "Hello what can I do for you?", "Ssup!"]
-    },
-    {"tag": "greetings",
-    "patterns": ["hello", "hey", "hi", "good day", "ssup", "how are you"],
-    "responses": ["Hello!", "Hey!", "Hello what can I do for you?", "Ssup!"]
-    },
-    {"tag": "greetings",
-    "patterns": ["hello", "hey", "hi", "good day", "ssup", "how are you"],
-    "responses": ["Hello!", "Hey!", "Hello what can I do for you?", "Ssup!"]
     }
 ]}

@@ -87,7 +87,7 @@ class ChatClient {
         } else {
           plainText +=
             '<div class="outgoing"> <div class="actual_msg"> <div class="message" id="actual_msg">' +
-            item.reply +
+            item.inputMessage +
             '</div> </div> <div class="profile"> <img class="profilepic" src="../static/images/outgoing.png" alt="outgoing profile"/> </div> </div>';
         }
       });

@@ -47,9 +47,9 @@ def predict_word(sentence):
     return return_list
 
 
-def get_response(wordBlock_lists):
+def get_response(wordBlock_lists, wordBlock_json):
     tag = wordBlock_lists[0]['wordBlock']
-    list_of_wordBlocks = wordBlock_json['wordBlocks']
+    list_of_wordBlocks = wordBlock_json['dictionary']
     for i in list_of_wordBlocks:
         if i["tag"] == tag:
             result = random.choice(i['responses'])
@@ -62,5 +62,5 @@ print("Go! Bot is running")
 while True:
     message = input("")
     wblks = predict_word(message)
-    res = get_response(wblks)
+    res = get_response(wblks, dictionary)
     print(res)
