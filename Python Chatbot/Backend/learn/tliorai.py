@@ -42,13 +42,13 @@ def predict_word(sentence):
 
     results.sort(key=lambda x: x[1], reverse=True)
     return_list = []
-    for r in result:
+    for r in results:
         return_list.append({'intent': classes[r[0]], 'probability': str(r[1])})
     return return_list
 
 
 def get_response(wordBlock_lists, wordBlock_json):
-    tag = wordBlock_lists[0]['wordBlock']
+    tag = wordBlock_lists[0]['intent']
     list_of_wordBlocks = wordBlock_json['dictionary']
     for i in list_of_wordBlocks:
         if i["tag"] == tag:
