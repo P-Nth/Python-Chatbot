@@ -1,18 +1,11 @@
-// const hideToggler = document.querySelector(".chatclient_container");
-// const viewToggleIcon = document.querySelector("#view_toggler");
-
-const { get } = require("express/lib/response");
-
-// viewToggleIcon.addEventListener("click", (e) => {
-//   hideToggler.classList.toggle("hide");
-// });
+// const { get } = require("express/lib/response");
 
 class ChatClient {
   constructor() {
     this.args = {
-      viewToggleIcon: document.querySelector(".chatclient_container"),
+      viewToggleIcon: document.querySelector(".opener"),
       chatClient: document.querySelector(".chatclient_container"),
-      sendButton: document.querySelector(".chatclient_container"),
+      sendButton: document.querySelector(".send_btn"),
     };
 
     this.state = false;
@@ -27,10 +20,10 @@ class ChatClient {
     );
 
     sendButton.addEventListener("click", () =>
-      this.onSubmitMessage.state(chatClient)
+      this.onSubmitMessage(chatClient)
     );
 
-    const node = chatClient.querySelector("input");
+    const node = chatClient.querySelector(".input");
     node.addEventListener("keyup", ({ key }) => {
       if (key === "Enter") {
         this.onSubmitMessage(chatClient);
@@ -44,13 +37,13 @@ class ChatClient {
     if (this.state) {
       chatClient.classList.add("unhide");
     } else {
-      chatClient.classList.remove("unhide ");
+      chatClient.classList.remove("unhide");
     }
   }
 
   onSubmitMessage(chatClient) {
     let inputField = chatClient.querySelector("input");
-    let inputMessage = inputMessage.value;
+    let inputMessage = inputField.value;
     if (inputMessage === "") {
       return;
     }
@@ -63,18 +56,18 @@ class ChatClient {
       body: JSON.stringify({ user_message: inputMessage }),
       mode: "cors",
       headers: {
-        "Content-Type": "webApp/json",
+        "Content-Type": "application/json",
       },
     })
       .then((r) => r.json())
       .then((r) => {
-        let getSecondMessage = { name: "AI", message: r.reply };
+        let getSecondMessage = { name: "AI", user_message: r.reply };
         this.messages.push(getSecondMessage);
         this.updateReplyText(chatClient);
         inputField.value = "";
       })
       .catch((error) => {
-        console.log("Error", error);
+        console.log("Error:", error);
         this.updateReplyText(chatClient);
         inputField.value = "";
       });
@@ -85,24 +78,24 @@ class ChatClient {
     this.messages
       .slice()
       .reverse()
-      .forEach(function (item) {
+      .forEach(function (item, i) {
         if (item.name == "AI") {
           plainText +=
-            '<div class="incoming"> <div class="profile"> <img class="profilepic" src="../static/images/incoming.png" alt="incoming profile"/> </div> <div class="actual_msg"> <div class="message" id="actual_msg">' +
+            '<div class="incoming"> <div class="profile"> <img class="profilepic" src="../static/images/incoming.png" alt="incoming profile"/> </div> <div class="actual_msg"> <div class="users_message" id="actual_msg">' +
             item.reply +
-            "</div> </div>";
+            "</div> </div> </div>";
         } else {
           plainText +=
-            '<div class="outgoing" key=""> <div class="actual_msg"> <div class="message" id="actual_msg">' +
+            '<div class="outgoing"> <div class="actual_msg"> <div class="message" id="actual_msg">' +
             item.reply +
-            '</div> <div class="profile"> <img class="profilepic" src="../static/images/outgoing.png" alt="outgoing profile"/> </div> </div>';
+            '</div> </div> <div class="profile"> <img class="profilepic" src="../static/images/outgoing.png" alt="outgoing profile"/> </div> </div>';
         }
       });
 
-    const messageChats = chatClient.querySelector(".scroll_view");
+    const messageChats = document.querySelector(".scroll_view");
     messageChats.innerHTML = plainText;
   }
 }
 
-const chatClient = new ChatClient();
-chatClient.display();
+const chatClient1 = new ChatClient();
+chatClient1.display();

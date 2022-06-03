@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='styles/style.css') }}"
-    />
-    <title>{% block title %}Tlior: ChatBot Project{% endblock %}</title>
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <title>Tlior: ChatBot Project</title>
   </head>
   <body>
     <nav>
@@ -82,7 +79,11 @@
             </div>
           </div>
           <div class="message_input">
-            <input type="text" placeholder="ask me anything! Human" />
+            <input
+              class="input"
+              type="text"
+              placeholder="ask me anything! Human"
+            />
             <div class="send_btn">
               <img src="../static/images/send.png" alt="send message" />
             </div>
@@ -90,13 +91,10 @@
         </div>
       </div>
     </div>
-
-    <!-- <script>
-      $SCRIPT_ROOT = {{ request.script_root|tojson }};
-    </script> -->
-    <script
+    <!-- <script
       type="text/javascript"
       src="{{ url_for('static', filename='scripts/scripts.js') }}"
-    ></script>
+    ></script> -->
+    <script type="text/javascript" src="../static/scripts/scripts.js"></script>
   </body>
 </html>

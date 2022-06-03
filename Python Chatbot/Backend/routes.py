@@ -2,7 +2,7 @@ from cgitb import text
 from urllib import response
 from flask import Blueprint, request, jsonify
 
-# from tliorAi import get_response
+from learn.tliorai import get_response
 
 homepage = Blueprint('home', __name__)
 
