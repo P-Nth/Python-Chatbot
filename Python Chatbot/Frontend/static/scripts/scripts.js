@@ -79,23 +79,23 @@ class ChatClient {
       .slice()
       .reverse()
       .forEach(function (item, i) {
-        if (item.name == "AI") {
+        if (item.name === "AI") {
           plainText +=
             '<div class="incoming"> <div class="profile"> <img class="profilepic" src="../static/images/incoming.png" alt="incoming profile"/> </div> <div class="actual_msg"> <div class="users_message" id="actual_msg">' +
-            item.reply +
+            item.user_message +
             "</div> </div> </div>";
         } else {
           plainText +=
             '<div class="outgoing"> <div class="actual_msg"> <div class="message" id="actual_msg">' +
-            item.inputMessage +
+            item.user_message +
             '</div> </div> <div class="profile"> <img class="profilepic" src="../static/images/outgoing.png" alt="outgoing profile"/> </div> </div>';
         }
       });
 
-    const messageChats = document.querySelector(".new_view");
+    const messageChats = chatClient.querySelector(".new_view");
     messageChats.innerHTML = plainText;
   }
 }
 
-const chatClient1 = new ChatClient();
-chatClient1.display();
+const chatClientgenerated = new ChatClient();
+chatClientgenerated.display();

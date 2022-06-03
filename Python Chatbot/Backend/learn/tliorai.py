@@ -11,11 +11,12 @@ from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
 
 lemmatizer = WordNetLemmatizer()
-dictionary = json.loads(open('dictionary.json').read())
+file = 'Backend/Learn/dictionary.json'
+dictionary = json.loads(open(file).read())
 
-words = pickle.load(open('words.pkl', 'rb'))
-classes = pickle.load(open('classes.pkl', 'rb'))
-model = load_model('ai_model1.h5')
+words = pickle.load(open('Backend/Learn/words.pkl', 'rb'))
+classes = pickle.load(open('Backend/Learn/classes.pkl', 'rb'))
+model = load_model('Backend/Learn/ai_model1.h5')
 
 
 def convert_to_words(sentence):
@@ -48,7 +49,7 @@ def predict_word(sentence):
 
 
 def get_response(wordBlock_lists, wordBlock_json):
-    tag = wordBlock_lists[0]['intent']
+    tag = wordBlock_lists[0]['dictionary']
     list_of_wordBlocks = wordBlock_json['dictionary']
     for i in list_of_wordBlocks:
         if i["tag"] == tag:
@@ -59,8 +60,10 @@ def get_response(wordBlock_lists, wordBlock_json):
 
 print("Go! Bot is running")
 
-while True:
-    message = input("")
-    wblks = predict_word(message)
-    res = get_response(wblks, dictionary)
-    print(res)
+if __name__ == "__main__":
+    while True:
+        user_message = input("You: ")
+        if user_message == 'bye':
+            break
+
+        res = get_response(user_message, dictionary)
