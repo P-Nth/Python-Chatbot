@@ -42,7 +42,7 @@ class ChatClient {
   }
 
   onSubmitMessage(chatClient) {
-    let inputField = chatClient.querySelector("input");
+    let inputField = chatClient.querySelector(".input");
     let inputMessage = inputField.value;
     if (inputMessage === "") {
       return;
@@ -92,7 +92,7 @@ class ChatClient {
         }
       });
 
-    const messageChats = document.querySelector(".scroll_view");
+    const messageChats = document.querySelector(".new_view");
     messageChats.innerHTML = plainText;
   }
 }
