@@ -44,12 +44,13 @@ def predict_word(sentence):
     results.sort(key=lambda x: x[1], reverse=True)
     return_list = []
     for r in results:
-        return_list.append({'intent': classes[r[0]], 'probability': str(r[1])})
+        return_list.append(
+            {'wordBlock': classes[r[0]], 'probability': str(r[1])})
     return return_list
 
 
 def get_response(wordBlock_lists, wordBlock_json):
-    tag = wordBlock_lists[0]['dictionary']
+    tag = wordBlock_lists[0]['wordBlock']
     list_of_wordBlocks = wordBlock_json['dictionary']
     for i in list_of_wordBlocks:
         if i["tag"] == tag:
@@ -62,8 +63,10 @@ print("Go! Bot is running")
 
 if __name__ == "__main__":
     while True:
-        user_message = input("You: ")
+        user_message = input("")
+        ints = predict_word(user_message)
         if user_message == 'bye':
             break
 
-        res = get_response(user_message, dictionary)
+        res = get_response(ints, dictionary)
+        print(res)
