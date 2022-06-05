@@ -19,14 +19,14 @@ $ cd "Python Chatbot"`
 
 # Install dependencies
 
-`$ pip install Flask torch torchvision nltk
-$ pip install flask-cors #Only necesary if you want to create a separate frontend and communicate with the backend via api.`
+`$ pip install Flask torch torchvision nltk `
+`$ pip install flask-cors` #Only necesary if you want to create a separate frontend and communicate with the backend via api.
 
 # Install nltk package
-`$ python
+`$ python`
 
-> > > import nltk
-> > > nltk.download('punkt')`
+`> > > import nltk`
+`> > > nltk.download('punkt')`
 
 Modify dictionary.json with different intents and responses for your Chatbot \n
 
