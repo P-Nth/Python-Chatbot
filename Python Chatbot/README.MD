@@ -25,8 +25,8 @@ $ pip install flask-cors #Only necesary if you want to create a separate fronten
 # Install nltk package
 $ python
 
-> > > import nltk
-> > > nltk.download('punkt')
+"> > >" import nltk
+"> > >" nltk.download('punkt')
 
 Modify dictionary.json with different intents and responses for your Chatbot
 
