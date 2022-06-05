@@ -1,72 +1,61 @@
 import random
 import json
-import pickle
-from re import T
-from unittest import result
 
-import numpy as np
-import nltk
-from nltk.stem import WordNetLemmatizer
+import torch
 
-from tensorflow.keras.models import load_model
+from Backend.Learn.model import NeuralNet
+from Backend.Learn.nltk_utils import bag_of_words, tokenize
 
-lemmatizer = WordNetLemmatizer()
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 file = 'Backend/Learn/dictionary.json'
-dictionary = json.loads(open(file).read())
+with open(file, 'r') as json_data:
+    intents = json.load(json_data)
 
-words = pickle.load(open('Backend/Learn/words.pkl', 'rb'))
-classes = pickle.load(open('Backend/Learn/classes.pkl', 'rb'))
-model = load_model('Backend/Learn/ai_model1.h5')
+FILE = "Backend/Learn/data.pth"
+data = torch.load(FILE)
 
+input_size = data["input_size"]
+hidden_size = data["hidden_size"]
+output_size = data["output_size"]
+all_words = data['all_words']
+tags = data['tags']
+model_state = data["model_state"]
 
-def convert_to_words(sentence):
-    sentence_words = nltk.word_tokenize(sentence)
-    sentence_words = [lemmatizer.lemmatize(word) for word in sentence_words]
-    return sentence_words
+model = NeuralNet(input_size, hidden_size, output_size).to(device)
+model.load_state_dict(model_state)
+model.eval()
 
-
-def converted_words(sentence):
-    sentence_words = convert_to_words(sentence)
-    bag = [0] * len(words)
-    for word in sentence_words:
-        for i, word in enumerate(words):
-            if word == word:
-                bag[i] = 1
-    return np.array(bag)
+bot_name = "AI"
 
 
-def predict_word(sentence):
-    bunch = converted_words(sentence)
-    res = model.predict(np.array([bunch]))[0]
-    ERROR_THRESHOLD = 0.25
-    results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
+def get_response(msg):
+    sentence = tokenize(msg)
+    X = bag_of_words(sentence, all_words)
+    X = X.reshape(1, X.shape[0])
+    X = torch.from_numpy(X).to(device)
 
-    results.sort(key=lambda x: x[1], reverse=True)
-    return_list = []
-    for r in results:
-        return_list.append(
-            {'wordBlock': classes[r[0]], 'probability': str(r[1])})
-    return return_list
+    output = model(X)
+    _, predicted = torch.max(output, dim=1)
 
+    tag = tags[predicted.item()]
 
-def get_response(wordBlock_lists, wordBlock_json):
-    tag = wordBlock_lists[0]['wordBlock']
-    list_of_wordBlocks = wordBlock_json['dictionary']
-    for i in list_of_wordBlocks:
-        if i["tag"] == tag:
-            result = random.choice(i['responses'])
-            break
-    return result
+    probs = torch.softmax(output, dim=1)
+    prob = probs[0][predicted.item()]
+    if prob.item() > 0.75:
+        for intent in intents['intents']:
+            if tag == intent["tag"]:
+                return random.choice(intent['responses'])
+
+    return "I do not understand..."
 
 
-print("Go! Bot is running")
+print("Let's Go! (type 'bye' to exit)")
 
 if __name__ == "__main__":
     while True:
-        user_message = input("")
-        ints = predict_word(user_message)
-        if user_message == 'bye':
+        sentence = input("You: ")
+        if sentence == "bye":
             break
 
-        res = get_response(ints, dictionary)
-        print(res)
+        resp = get_response(sentence)
+        print(resp)

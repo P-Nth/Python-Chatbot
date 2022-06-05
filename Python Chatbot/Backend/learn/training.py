@@ -1,75 +1,131 @@
+import numpy as np
 import random
 import json
-import pickle
-from tabnanny import verbose
 
-import numpy as np
-import nltk
-from nltk.stem import WordNetLemmatizer
+import torch
+import torch.nn as nn
+from torch.utils.data import Dataset, DataLoader
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Dropout
-from tensorflow.keras.optimizers import SGD  # SARCASTIC GRADING DECENT
+from nltk_utils import bag_of_words, tokenize, stem
+from model import NeuralNet
 
-lemmatizer = WordNetLemmatizer()
+with open('intents.json', 'r') as f:
+    intents = json.load(f)
 
-dictionary = json.loads(open('dictionary.json').read())
+all_words = []
+tags = []
+xy = []
+# loop through each sentence in our intents patterns
+for intent in intents['intents']:
+    tag = intent['tag']
+    # add to tag list
+    tags.append(tag)
+    for pattern in intent['patterns']:
+        # tokenize each word in the sentence
+        w = tokenize(pattern)
+        # add to our words list
+        all_words.extend(w)
+        # add to xy pair
+        xy.append((w, tag))
 
-words = []
-classes = []
-documents = []
-ignore_letters = ['?', '.', '!', ',']
+# stem and lower each word
+ignore_words = ['?', '.', '!']
+all_words = [stem(w) for w in all_words if w not in ignore_words]
+# remove duplicates and sort
+all_words = sorted(set(all_words))
+tags = sorted(set(tags))
 
-for wordBlock in dictionary['dictionary']:
-    for pattern in wordBlock['patterns']:
-        word_list = nltk.word_tokenize(pattern)
-        words.extend(word_list)
-        documents.append((word_list, wordBlock['tag']))
-        if wordBlock['tag'] not in classes:
-            classes.append(wordBlock['tag'])
+print(len(xy), "patterns")
+print(len(tags), "tags:", tags)
+print(len(all_words), "unique stemmed words:", all_words)
 
-words = [lemmatizer.lemmatize(word)
-         for word in words if word not in ignore_letters]
-words = sorted(set(words))
+# create training data
+X_train = []
+y_train = []
+for (pattern_sentence, tag) in xy:
+    # X: bag of words for each pattern_sentence
+    bag = bag_of_words(pattern_sentence, all_words)
+    X_train.append(bag)
+    # y: PyTorch CrossEntropyLoss needs only class labels, not one-hot
+    label = tags.index(tag)
+    y_train.append(label)
 
-classes = sorted(set(classes))
+X_train = np.array(X_train)
+y_train = np.array(y_train)
 
-pickle.dump(words, open('words.pkl', 'wb'))
-pickle.dump(classes, open('classes.pkl', 'wb'))
+# Hyper-parameters
+num_epochs = 1000
+batch_size = 8
+learning_rate = 0.001
+input_size = len(X_train[0])
+hidden_size = 8
+output_size = len(tags)
+print(input_size, output_size)
 
-training = []
-output_empty = [0] * len(classes)
 
-for document in documents:
-    bag = []
-    word_patterns = document[0]
-    words_patterns = [lemmatizer.lemmatize(
-        word.lower()) for word in word_patterns]
-    for word in words:
-        bag.append(1) if word in word_patterns else bag.append(0)
+class ChatDataset(Dataset):
 
-    output_row = list(output_empty)
-    output_row[classes.index(document[1])] = 1
-    training.append([bag, output_row])
+    def __init__(self):
+        self.n_samples = len(X_train)
+        self.x_data = X_train
+        self.y_data = y_train
 
-random.shuffle(training)
-training = np.array(training)
+    # support indexing such that dataset[i] can be used to get i-th sample
+    def __getitem__(self, index):
+        return self.x_data[index], self.y_data[index]
 
-train_x = list(training[:, 0])
-train_y = list(training[:, 1])
+    # we can call len(dataset) to return the size
+    def __len__(self):
+        return self.n_samples
 
-model = Sequential()
-model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(64, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(len(train_y[0]), activation="softmax"))
 
-sgd = SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-model.compile(loss='categorical_crossentropy',
-              optimizer=sgd, metrics=['accuracy'])
+dataset = ChatDataset()
+train_loader = DataLoader(dataset=dataset,
+                          batch_size=batch_size,
+                          shuffle=True,
+                          num_workers=0)
 
-prev = model.fit(np.array(train_x), np.array(train_y),
-                 epochs=200, batch_size=5, verbose=1)
-model.save('ai_model1.h5', prev)
-print("Done")
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+model = NeuralNet(input_size, hidden_size, output_size).to(device)
+
+# Loss and optimizer
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+# Train the model
+for epoch in range(num_epochs):
+    for (words, labels) in train_loader:
+        words = words.to(device)
+        labels = labels.to(dtype=torch.long).to(device)
+
+        # Forward pass
+        outputs = model(words)
+        # if y would be one-hot, we must apply
+        # labels = torch.max(labels, 1)[1]
+        loss = criterion(outputs, labels)
+
+        # Backward and optimize
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+    if (epoch+1) % 100 == 0:
+        print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
+
+
+print(f'final loss: {loss.item():.4f}')
+
+data = {
+    "model_state": model.state_dict(),
+    "input_size": input_size,
+    "hidden_size": hidden_size,
+    "output_size": output_size,
+    "all_words": all_words,
+    "tags": tags
+}
+
+FILE = "data.pth"
+torch.save(data, FILE)
+
+print(f'training complete. file saved to {FILE}')

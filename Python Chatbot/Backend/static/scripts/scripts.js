@@ -75,22 +75,19 @@ class ChatClient {
 
   updateReplyText(chatClient) {
     let plainText = "";
-    this.messages
-      .slice()
-      .reverse()
-      .forEach(function (item, i) {
-        if (item.name === "AI") {
-          plainText +=
-            '<div class="incoming"> <div class="profile"> <img class="profilepic" src="../static/images/incoming.png" alt="incoming profile"/> </div> <div class="actual_msg"> <div class="users_message" id="actual_msg">' +
-            item.user_message +
-            "</div> </div> </div>";
-        } else {
-          plainText +=
-            '<div class="outgoing"> <div class="actual_msg"> <div class="message" id="actual_msg">' +
-            item.user_message +
-            '</div> </div> <div class="profile"> <img class="profilepic" src="../static/images/outgoing.png" alt="outgoing profile"/> </div> </div>';
-        }
-      });
+    this.messages.slice().forEach(function (item) {
+      if (item.name === "User") {
+        plainText +=
+          '<div class="outgoing"> <div class="actual_msg"> <div class="message" id="actual_msg">' +
+          item.user_message +
+          '</div> </div> <div class="profile"> <img class="profilepic" src="../static/images/outgoing.png" alt="outgoing profile"/> </div> </div>';
+      } else {
+        plainText +=
+          '<div class="incoming"> <div class="profile"> <img class="profilepic" src="../static/images/incoming.png" alt="incoming profile"/> </div> <div class="actual_msg"> <div class="users_message" id="actual_msg">' +
+          item.user_message +
+          "</div> </div> </div>";
+      }
+    });
 
     const messageChats = chatClient.querySelector(".new_view");
     messageChats.innerHTML = plainText;

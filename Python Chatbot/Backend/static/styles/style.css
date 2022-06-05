@@ -167,13 +167,13 @@ body .chatclient .chatclient_container .recycler {
 }
 body .chatclient .chatclient_container .recycler .scroll_view {
   padding: 0 0 1em 0;
+  overflow-y: scroll;
+  max-height: 32em;
 }
 body .chatclient .chatclient_container .recycler .new_view {
   padding: 1em 0 1em 0;
   display: grid;
   grid-gap: 1em;
-  overflow-y: scroll;
-  max-height: 32em;
 }
 body .chatclient .chatclient_container .recycler .scroll_view .incoming,
 body .chatclient .chatclient_container .recycler .scroll_view .outgoing {
