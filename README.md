@@ -1,3 +1,3 @@
 # Python
 
-This Repo contains a Chatbot Python Projects.
+This Repo contains a Chatbot Python Project.
