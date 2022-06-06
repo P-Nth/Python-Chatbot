@@ -56,7 +56,7 @@ First you need to configure and implement the index.html and open it on the brow
 
 And then configure scripts.js to post user input & fetch response from the backend.
 
-Then run the main file to open the localhost using the command below.
+Then run the main file to start the localhost api using the command below.
 
 `$ python main.py`
 
