@@ -2,6 +2,10 @@ PYTHON CHATBOT
 
 Version 0.0.1
 
+# Required Interprator
+
+Use Python 3.10.4 64-bit or any other recommended interprator for this project
+
 # Chatbot Client with Flask and JavaScript.
 
 This chatbot is deployed within a Flask app with jinja template.
