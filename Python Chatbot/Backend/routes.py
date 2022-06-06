@@ -4,11 +4,6 @@ from Backend.Learn.tliorai import get_response
 homepage = Blueprint('homepage', __name__)
 
 
-# @homepage.get("/")
-# def home():
-#     return render_template('index.html')
-
-
 @homepage.post('/analy')
 def analy():
     text = request.get_json().get("user_message")

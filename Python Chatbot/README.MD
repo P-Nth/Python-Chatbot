@@ -2,6 +2,10 @@ PYTHON CHATBOT
 
 Version 0.0.1
 
+# Required Interprator
+
+Use Python 3.10.4 64-bit or any other recommended interprator for this project
+
 # Chatbot Client with Flask and JavaScript.
 
 This chatbot is deployed within a Flask app with jinja template.
@@ -29,6 +33,7 @@ Go ahead and clone the repo now.
 `$ pip install flask-cors` #Only necesary if you want to create a separate frontend and communicate with the backend via api.
 
 # Install nltk package
+
 `$ python`
 
 `> > > import nltk`
