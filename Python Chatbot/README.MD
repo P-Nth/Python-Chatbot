@@ -40,7 +40,7 @@ Go ahead and clone the repo now.
 
 `> > > nltk.download('punkt')`
 
-Modify dictionary.json with different intents and responses for your Chatbot \n
+Modify dictionary.json with different intents and responses for your Chatbot
 
 # Run
 
