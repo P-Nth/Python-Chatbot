@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from Backend.Learn.tliorai import get_response
+from Backend.learn.tliorai import get_response
 
 homepage = Blueprint('homepage', __name__)
 

@@ -3,8 +3,8 @@ import json
 
 import torch
 
-from Backend.Learn.model import NeuralNet
-from Backend.Learn.nltk_utils import bag_of_words, tokenize
+from Backend.learn.model import NeuralNet
+from Backend.learn.nltk_utils import bag_of_words, tokenize
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 file = 'Backend/Learn/dictionary.json'
