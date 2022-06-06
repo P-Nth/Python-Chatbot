@@ -9,18 +9,19 @@ from torch.utils.data import Dataset, DataLoader
 from nltk_utils import bag_of_words, tokenize, stem
 from model import NeuralNet
 
-with open('intents.json', 'r') as f:
-    intents = json.load(f)
+file = 'Backend/Learn/dictionary.json'
+with open(file, 'r') as json_data:
+    dictionary = json.load(json_data)
 
 all_words = []
 tags = []
 xy = []
-# loop through each sentence in our intents patterns
-for intent in intents['intents']:
-    tag = intent['tag']
+# loop through each sentence in our dictionary patterns
+for item in dictionary['intents']:
+    tag = item['tag']
     # add to tag list
     tags.append(tag)
-    for pattern in intent['patterns']:
+    for pattern in item['patterns']:
         # tokenize each word in the sentence
         w = tokenize(pattern)
         # add to our words list
@@ -125,7 +126,7 @@ data = {
     "tags": tags
 }
 
-FILE = "data.pth"
+FILE = "Backend/Learn/data.pth"
 torch.save(data, FILE)
 
 print(f'training complete. file saved to {FILE}')

@@ -94,5 +94,5 @@ class ChatClient {
   }
 }
 
-const chatClientgenerated = new ChatClient();
-chatClientgenerated.display();
+const chatgenerated = new ChatClient();
+chatgenerated.display();

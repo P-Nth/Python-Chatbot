@@ -1,5 +1,5 @@
-# from nturl2path import url2pathname
-# from urllib.request import urlopen
+from nturl2path import url2pathname
+from urllib.request import urlopen
 from flask import Flask
 
 

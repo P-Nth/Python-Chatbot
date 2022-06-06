@@ -138,7 +138,7 @@ body .chatclient .chatclient_container {
   bottom: 0;
   margin-right: 1.5em;
   max-height: 2.45em;
-  transition: all 0.4s ease-in;
+  transition: all 0.25s ease-in;
 }
 body .chatclient .chatclient_container.unhide {
   max-height: 40em;

@@ -42,14 +42,14 @@ def get_response(msg):
     probs = torch.softmax(output, dim=1)
     prob = probs[0][predicted.item()]
     if prob.item() > 0.75:
-        for intent in intents['intents']:
+        for intent in intents["intents"]:
             if tag == intent["tag"]:
                 return random.choice(intent['responses'])
 
     return "I do not understand..."
 
 
-print("Let's Go! (type 'bye' to exit)")
+print("Let's Go! Its Working")
 
 if __name__ == "__main__":
     while True:
@@ -58,4 +58,4 @@ if __name__ == "__main__":
             break
 
         resp = get_response(sentence)
-        print(resp)
+        print("AI:", resp)

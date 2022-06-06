@@ -1,75 +1,77 @@
-from tensorflow.python.keras.models import load_model
+from tensorflow.python.keras.optimizer_v1 import SGD
+from tensorflow.python.keras.layers import Dense, Activation, Dropout
+from tensorflow.python.keras.models import Sequential
 import random
 import json
 import pickle
-from re import T
-from unittest import result
+from tabnanny import verbose
+import tensorflow as tf
 
 import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
+tf.compat.v1.disable_eager_execution()
 
 
 lemmatizer = WordNetLemmatizer()
-file = open('Backend/Learn/dictionary.json')
+file = open('Backend/Learn/TliorDictionary.json')
 dictionary = json.loads(file.read())
 
-words = pickle.load(open('Backend/Learn/words.pkl', 'rb'))
-classes = pickle.load(open('Backend/Learn/classes.pkl', 'rb'))
-model = load_model('Backend/Learn/ai_model1.h5')
+words = []
+classes = []
+itemHolder = []
+ignore_characters = ['?', '.', '!', ',']
 
+for wordBlock in dictionary['dictionary']:
+    for pattern in wordBlock['patterns']:
+        word_list = nltk.wordpunct_tokenize(pattern)
+        words.extend(word_list)
+        itemHolder.append((word_list, wordBlock['tag']))
+        if wordBlock['tag'] not in classes:
+            classes.append(wordBlock['tag'])
 
-def convert_to_words(sentence):
-    sentence_words = nltk.word_tokenize(sentence)
-    sentence_words = [lemmatizer.lemmatize(word) for word in sentence_words]
-    return sentence_words
+words = [lemmatizer.lemmatize(word)
+         for word in words if word not in ignore_characters]
+words = sorted(set(words))
 
+classes = sorted(set(classes))
 
-def converted_words(sentence):
-    sentence_words = convert_to_words(sentence)
-    bag = [0] * len(words)
-    for wordItem in sentence_words:
-        for i, word in enumerate(words):
-            if word == wordItem:
-                bag[i] = 1
-    return np.array(bag)
+pickle.dump(words, open('Backend/Learn/words.pkl', 'wb'))
+pickle.dump(classes, open('Backend/Learn/classes.pkl', 'wb'))
 
+training = []
+empty_output = [0] * len(classes)
 
-def predict_word(sentence):
-    bunch = converted_words(sentence)
-    res = model.predict(np.array([bunch]))[0]
-    ERROR_THRESHOLD = 0.25
-    results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
+for item in itemHolder:
+    bag = []
+    word_patterns = item[0]
+    words_patterns = [lemmatizer.lemmatize(
+        word.lower()) for word in word_patterns]
+    for word in words:
+        bag.append(1) if word in word_patterns else bag.append(0)
 
-    results.sort(key=lambda x: x[1], reverse=True)
-    return_list = []
-    for r in results:
-        return_list.append(
-            {'wordBlock': classes[r[0]], 'probability': str(r[1])})
-    return return_list
+    row_output = list(empty_output)
+    row_output[classes.index(item[1])] = 1
+    training.append([bag, row_output])
 
+random.shuffle(training)
+training = np.array(training)
 
-def get_response(user_input):
-    try:
-        tag = user_input[0]['wordBlock']
-        list_of_wordBlocks = dictionary['dictionary']
-        for i in list_of_wordBlocks:
-            if i['tag'] == tag:
-                result = random.choice(i['responses'])
-                break
-    except IndexError:
-        result = "I don't understand!"
-    return result
+trainning_x = list(training[:, 0])
+trainning_y = list(training[:, 1])
 
+model = Sequential()
+model.add(Dense(128, input_shape=(len(trainning_x[0]),), activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(len(trainning_y[0]), activation="softmax"))
 
-print("Lets Go! It's working")
+sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+model.compile(loss='categorical_crossentropy',
+              optimizer=sgd, metrics=['accuracy'])
 
-# if __name__ == "__main__":
-while True:
-    text = input("User: ")
-    user_message = predict_word(text)
-    if text == 'bye':
-        break
-
-    res = get_response(user_message)
-    print("AI:", res)
+prev = model.fit(np.array(trainning_x), np.array(trainning_y),
+                 epochs=200, batch_size=5, verbose=1)
+model.save('Backend/Learn/ai_model1.h5', prev)
+print("Done")
