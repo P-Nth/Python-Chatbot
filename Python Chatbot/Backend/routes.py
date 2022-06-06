@@ -4,9 +4,9 @@ from Backend.Learn.tliorai import get_response
 homepage = Blueprint('homepage', __name__)
 
 
-@homepage.get("/")
-def home():
-    return render_template('index.html')
+# @homepage.get("/")
+# def home():
+#     return render_template('index.html')
 
 
 @homepage.post('/analy')
