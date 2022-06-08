@@ -46,7 +46,7 @@ Modify dictionary.json with different intents and responses for your Chatbot \n
 
 Path to use `~/My-Python-Projects/Python Chatbot`
 
-`$ python tlior.py`
+`$ python tliorai.py`
 
 This will dump data.pth file. And then run the following command to test it in the console.
 
