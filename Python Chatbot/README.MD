@@ -8,9 +8,9 @@ Use Python 3.10.4 64-bit or any other recommended interprator for this project
 
 # Chatbot Client with Flask and JavaScript.
 
-This chatbot is deployed within a Flask app with jinja template.
+This chatbot can be deployed within a Flask app with jinja template.
 
-It can be configured so that the frontend is separated with the backend.
+It can also be configured so that the frontend is separated with the backend.
 
 This will require you to use cors to enable the Cross Origin Resource Sharing
 
@@ -22,13 +22,13 @@ No need for a vitual environment.
 
 Go ahead and clone the repo now.
 
-`$ git clone https://github.com/P-Nth/My-Python-Projects.git`
+`$ git clone https://github.com/P-Nth/Python-Chatbot.git`
 
 `$ cd "Python Chatbot"`
 
 # Install dependencies
 
-`$ pip install Flask torch torchvision nltk `
+`$ pip install Flask torch torchvision nltk tensorflow keras `
 
 `$ pip install flask-cors` #Only necesary if you want to create a separate frontend and communicate with the backend via api.
 
@@ -40,7 +40,7 @@ Go ahead and clone the repo now.
 
 `> > > nltk.download('punkt')`
 
-Modify dictionary.json with different intents and responses for your Chatbot
+Modify TliorDictionary.json with different intents and responses for your Chatbot
 
 # Run
 
