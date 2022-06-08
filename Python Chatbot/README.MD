@@ -40,7 +40,7 @@ Go ahead and clone the repo now.
 
 `> > > nltk.download('punkt')`
 
-Modify dictionary.json with different intents and responses for your Chatbot \n
+Modify dictionary.json with different intents and responses for your Chatbot
 
 # Run
 
@@ -52,9 +52,11 @@ This will dump data.pth file. And then run the following command to test it in t
 
 # Then Deploy The File Server:
 
-First you need to configure and implement the index.html.
+First you need to configure and implement the index.html and open it on the browser.
 
 And then configure scripts.js to post user input & fetch response from the backend.
+
+Then run the main file to start the localhost api using the command below.
 
 `$ python main.py`
 
